@@ -17,9 +17,12 @@ int main(int argc, char **argv) {
     std::cout << "fibonacci(20) = " << FIB20 << std::endl;
 
     // TODO: 观察错误信息，修改一处，使代码编译运行
-    constexpr auto ANS_N = 100;
+    constexpr auto ANS_N = 10;
     constexpr auto ANS = fibonacci(ANS_N);
     std::cout << "fibonacci(" << ANS_N << ") = " << ANS << std::endl;
 
     return 0;
 }
+
+/* constexpr 受递归层数限制 */
+/* 要么调低ANS_N，要么去掉ANS的constexpr限制 */

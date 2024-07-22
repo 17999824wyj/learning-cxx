@@ -10,8 +10,15 @@ struct Tensor4D {
     Tensor4D(unsigned int const shape_[4], T const *data_) {
         unsigned int size = 1;
         // TODO: 填入正确的 shape 并计算 size
+        // shape 代表的含义是：shape[0] * shape[1] * shape[2] * shape[3]
+        // 当 shape 是 [1, 2, 3, 4] 时，size 就是 1 * 2 * 3 * 4 = 24
+        size *= shape_[0];
+        size *= shape_[1];
+        size *= shape_[2];
+        size *= shape_[3];
         data = new T[size];
         std::memcpy(data, data_, size * sizeof(T));
+        std::memcpy(shape, shape_, 4 * sizeof(unsigned int));
     }
     ~Tensor4D() {
         delete[] data;
@@ -27,7 +34,39 @@ struct Tensor4D {
     // 例如，`this` 形状为 `[1, 2, 3, 4]`，`others` 形状为 `[1, 2, 1, 4]`，
     // 则 `this` 与 `others` 相加时，3 个形状为 `[1, 2, 1, 4]` 的子张量各自与 `others` 对应项相加。
     Tensor4D &operator+=(Tensor4D const &others) {
+        // [1,2,3,4] += [1,2,1,4] 的实例：
+        // int data[]{
+        //      1,  2,  3,  4,
+        //      5,  6,  7,  8,
+        //      9, 10, 11, 12,
+
+        //     13, 14, 15, 16,
+        //     17, 18, 19, 20,
+        //     21, 22, 23, 24};
+        // 上面的这个 data 就是 [1,2,3,4]类型的Tensor
+
+        // 下面的这个 data2 就是 [1,2,1,4]类型的
+        // int data2[]{
+        //      1,  2,  3,  4,
+
+        //     13, 14, 15, 16};
+
+        // 需要把 data2 变成 data3 这样的：
+        // int data3[]{
+        //      1,  2,  3,  4,
+        //      1,  2,  3,  4,
+        //      1,  2,  3,  4,
+
+        //     13, 14, 15, 16,
+        //     13, 14, 15, 16,
+        //     13, 14, 15, 16};
+
+        // 然后就能相加了
+
         // TODO: 实现单向广播的加法
+
+        // 由于已经约定好，维度要么相同，要么others为1
+
         return *this;
     }
 };

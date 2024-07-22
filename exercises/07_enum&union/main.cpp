@@ -34,7 +34,7 @@ ColorEnum convert_by_pun(Color c) {
 
     TypePun pun;
     // TODO: 补全类型双关转换
-
+    pun.c = c;
     return pun.e;
 }
 
@@ -45,3 +45,5 @@ int main(int argc, char **argv) {
     ASSERT(convert_by_pun(Color::Blue) == COLOR_BLUE, "Type punning conversion");
     return 0;
 }
+
+/* Union 使用方式 */

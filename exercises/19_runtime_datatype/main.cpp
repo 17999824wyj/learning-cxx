@@ -18,13 +18,24 @@ struct TaggedUnion {
 };
 
 // TODO: 将这个函数模板化用于 sigmoid_dyn
-float sigmoid(float x) {
+template <typename T>
+T sigmoid(T x) {
     return 1 / (1 + std::exp(-x));
 }
 
 TaggedUnion sigmoid_dyn(TaggedUnion x) {
     TaggedUnion ans{x.type};
     // TODO: 根据 type 调用 sigmoid
+    switch (x.type) {
+        case DataType::Float:
+            ans.f = sigmoid(x.f);
+            break;
+        case DataType::Double:
+            ans.d = sigmoid(x.d);
+            break;
+        default:
+            break;
+    }
     return ans;
 }
 
@@ -43,3 +54,5 @@ int main(int argc, char **argv) {
     ASSERT(yd.d == 1 / (1 + std::exp(-5.0)), "sigmoid double");
     return 0;
 }
+
+/* 通过模板实现动态调用 */
