@@ -14,7 +14,7 @@ struct Tensor {
 
         std::memcpy(shape, shape_, N * sizeof(unsigned int));
 
-        for (int i = 0; i < 4; ++i) {
+        for (int i = 0; i < N; ++i) {
             size *= shape[i];
         }
 
@@ -41,15 +41,15 @@ private:
         unsigned int index = 0;
 
         // 计算步长
-        unsigned int strides[4] = {1};
-        for (int i = 3; i > 0; --i) {
-            strides[i - 1] = strides[i] * this->shape[i];
+        unsigned int strides[N] = {1};
+        for (int i = 0; i < N - 1; ++i) {
+            strides[i + 1] = strides[i] * this->shape[N-1-i];
         }
 
         for (unsigned int i = 0; i < N; ++i) {
             ASSERT(indices[i] < shape[i], "Invalid index");
             // TODO: 计算 index
-            index += indices[i] * strides[i];
+            index += indices[i] * strides[N-1-i];
         }
 
         return index;

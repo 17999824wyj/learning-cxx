@@ -51,13 +51,7 @@ public:
         }
         return cache[i];
     }
-
-    // Add: 增加了一个适配const对象的成员函数
-    size_t operator[](int i) const {
-        // 这里不更新 cached，只访问已缓存的值
-        return cache[i];
-    }
-
+    
     // NOTICE: 不要修改这个方法
     size_t operator[](int i) const {
         ASSERT(i <= cached, "i out of range");
